@@ -1007,7 +1007,7 @@ index 00000000..a9d8f28d
 +		"echo Trying to boot Linux from eMMC ...; " \
 +		"setenv mmcdev 1; " \
 +		"setenv bootpart 1:2; " \
-+		"setenv mmcroot /dev/mmcblk0p2 rw; " \
++		"setenv mmcroot /dev/mmcblk1p2 rw; " \
 +		"run mmcboot;\0" \
 +	"emmc_android_boot=" \
 +		"setenv mmcdev 1; " \

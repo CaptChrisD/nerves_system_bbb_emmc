@@ -1,8 +1,8 @@
-defmodule NervesSystemBbb.MixProject do
+defmodule NervesSystemBbbEmmc.MixProject do
   use Mix.Project
 
-  @github_organization "nerves-project"
-  @app :nerves_system_bbb
+  @github_organization "captchrisd"
+  @app :nerves_system_bbb_emmc
   @source_url "https://github.com/#{@github_organization}/#{@app}"
   @version Path.join(__DIR__, "VERSION")
            |> File.read!()
@@ -77,7 +77,7 @@ defmodule NervesSystemBbb.MixProject do
 
   defp description do
     """
-    Nerves System - BeagleBone Black, BeagleBone Green, PocketBeagle and more
+    Nerves System - BeagleBone Black for running on eMMC
     """
   end
 
