@@ -13,7 +13,7 @@ This is the base Nerves System configuration for the [BeagleBone Black](http://b
 | -------------------- | ------------------------------- |
 | CPU                  | 1 GHz ARM Cortex-A8             |
 | Memory               | 512 MB DRAM                     |
-| Storage              | 4 GB eMMC Flash and MicroSD     |
+| Storage              | 4 GB eMMC Flash                 |
 | Linux kernel         | 5.10 w/ BBB patches             |
 | IEx terminal         | UART `ttyS0`                    |
 | GPIO, I2C, SPI       | Yes - [Elixir Circuits](https://github.com/elixir-circuits) |
@@ -28,12 +28,17 @@ This is the base Nerves System configuration for the [BeagleBone Black](http://b
 ## Using
 
 The most common way of using this Nerves System is create a project with `mix
-nerves.new` and to export `MIX_TARGET=bbb_emmc`. See the [Getting started
-guide](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app)
+nerves.new`. Since this system is not included by default in a new projects `mix.exs` file you need to add the following to modify the `mix.exs` file in two locations.
+
+1) Add `:bbb_emmc` to the list of `@all_targets`.
+1) Add the following to the dependency list:
+```
+{:nerves_system_bbb_emmc, "~> 3.0.0", runtime: false, targets: :bbb_emmc}
+```
+Then export `MIX_TARGET=bbb_emmc` for all mix tasks. See the [Getting started guide](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app)
 for more information.
 
-If you need custom modifications to this system for your device, clone this
-repository and update as described in [Making custom
+If you need custom modifications to this system for your device, clone this repository and update as described in [Making custom
 systems](https://hexdocs.pm/nerves/customizing-systems.html).
 
 ## Preparing your BeagleBone
