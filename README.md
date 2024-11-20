@@ -1,11 +1,10 @@
-# Generic BeagleBone Support
+# BeagleBone Black and Green for eMMC booting
 
-[![CircleCI](https://circleci.com/gh/nerves-project/nerves_system_bbb.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_system_bbb)
-[![Hex version](https://img.shields.io/hexpm/v/nerves_system_bbb.svg "Hex version")](https://hex.pm/packages/nerves_system_bbb)
+<!-- [![CircleCI](https://circleci.com/gh/nerves-project/nerves_system_bbb.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_system_bbb)
+[![Hex version](https://img.shields.io/hexpm/v/nerves_system_bbb.svg "Hex version")](https://hex.pm/packages/nerves_system_bbb) -->
 
 This is the base Nerves System configuration for the [BeagleBone Black](http://beagleboard.org/black),
-[BeagleBone Green](http://beagleboard.org/green), [BeagleBone Green Wireless](https://beagleboard.org/green-wireless/),
-and [PocketBeagle](https://beagleboard.org/pocket).
+[BeagleBone Green](http://beagleboard.org/green), [BeagleBone Green Wireless](https://beagleboard.org/green-wireless/)
 
 ![BeagleBone Black image](assets/images/beaglebone-black.png)
 <br><sup>[Image credit](#fritzing)</sup>
@@ -14,7 +13,7 @@ and [PocketBeagle](https://beagleboard.org/pocket).
 | -------------------- | ------------------------------- |
 | CPU                  | 1 GHz ARM Cortex-A8             |
 | Memory               | 512 MB DRAM                     |
-| Storage              | 4 GB eMMC Flash and MicroSD     |
+| Storage              | 4 GB eMMC Flash                 |
 | Linux kernel         | 5.10 w/ BBB patches             |
 | IEx terminal         | UART `ttyS0`                    |
 | GPIO, I2C, SPI       | Yes - [Elixir Circuits](https://github.com/elixir-circuits) |
@@ -29,41 +28,24 @@ and [PocketBeagle](https://beagleboard.org/pocket).
 ## Using
 
 The most common way of using this Nerves System is create a project with `mix
-nerves.new` and to export `MIX_TARGET=bbb`. See the [Getting started
-guide](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app)
+nerves.new`. Since this system is not included by default in a new projects `mix.exs` file you need to add the following to modify the `mix.exs` file in two locations.
+
+1) Add `:bbb_emmc` to the list of `@all_targets`.
+1) Add the following to the dependency list:
+```
+{:nerves_system_bbb_emmc, "~> 3.0.0", runtime: false, targets: :bbb_emmc}
+```
+Then export `MIX_TARGET=bbb_emmc` for all mix tasks. See the [Getting started guide](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app)
 for more information.
 
-If you need custom modifications to this system for your device, clone this
-repository and update as described in [Making custom
+If you need custom modifications to this system for your device, clone this repository and update as described in [Making custom
 systems](https://hexdocs.pm/nerves/customizing-systems.html).
 
 ## Preparing your BeagleBone
 
-If your BeagleBone has eMMC (the PocketBeagle doesn't), it will be configured to
-try the eMMC first when looking for software on boot. If you haven't
-reprogrammed it, it will boot to Debian even if a MicroSD card is inserted with
-good software. To boot from the MicroSD card, hold down the USER button and
-apply power.
+This system utilizes the built in eMMC of the BeagleBone. Getting a Nerves System booting from the eMMC requires an initialization process. Initial flashing is done using the [Nerves BBB eMMC Flasher](https://www.github.com/captchrisd/nerves_bbb_emmc_flasher) repository. Follow the README in that repository for instructions on how to conduct the initial flashing.
 
-When starting with Nerves, you will find that booting from a MicroSD card is
-convenient since you can easily recover from broken software images. Holding
-down the USER button will get old. To force the BeagleBone to boot from the
-MicroSD card, simply corrupt the image on the eMMC memory.  Don't worry, the
-BeagleBone website has instructions for restoring Debian.
-
-From Debian:
-
-```bash
-debian@beaglebone:~$ sudo dd if=/dev/zero of=/dev/mmcblk0 bs=1M count=100
-100+0 records in
-100+0 records out
-104857600 bytes (105 MB) copied, 5.72098 s, 18.3 MB/s
-debian@beaglebone:~$ sudo reboot
-```
-
-When it reboots, it will boot from the MicroSD slot. If a MicroSD card hasn't
-been inserted or if there are errors reading it, you will see the letter `C`
-printed repeatedly on the console port.
+After the BeagleBone's internal eMMC is flashed then updates can be conducted via the OTA process (eg. `mix upload`).
 
 ## Console access
 
