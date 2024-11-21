@@ -33,7 +33,7 @@ nerves.new`. Since this system is not included by default in a new projects `mix
 1) Add `:bbb_emmc` to the list of `@all_targets`.
 1) Add the following to the dependency list:
 ```
-{:nerves_system_bbb_emmc, "~> 3.0.0", runtime: false, targets: :bbb_emmc}
+{:nerves_system_bbb_emmc, git: "https://github.com/CaptChrisD/nerves_system_bbb_emmc.git", tag: "v3.0.0", runtime: false, targets: :bbb_emmc}
 ```
 Then export `MIX_TARGET=bbb_emmc` for all mix tasks. See the [Getting started guide](https://hexdocs.pm/nerves/getting-started.html#creating-a-new-nerves-app)
 for more information.
